@@ -16,14 +16,17 @@ class WordDocumentService {
       }
 
       // Générer le titre dynamique
-      let titleLines = ['لائحة الموظفين المستفيدين من التعويض'];
+      let title = 'لائحة الموظفين المستفيدين من التعويض';
       if (assignment && service) {
-        titleLines.push(`ب${assignment}`);
-        titleLines.push(`ب${service}`);
+        title = `لائحة الموظفين المستفيدين من التعويض 
+         ب${assignment} 
+         ب${service}`;
       } else if (assignment) {
-        titleLines.push(`ب${assignment}`);
+        title = `لائحة الموظفين المستفيدين من التعويض 
+        ب${assignment}`;
       } else if (service) {
-        titleLines.push(`ب${service}`);
+        title = `لائحة الموظفين المستفيدين من التعويض 
+         ب${service}`;
       }
 
 
@@ -106,21 +109,19 @@ class WordDocumentService {
               spacing: { after: 400 },
             }),
 
-            // Titres principaux centrés
-            ...titleLines.map((line, index) => 
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: line,
-                    size: index === 0 ? 24 : 20,
-                    font: "Calibri",
-                    bold: true,
-                  }),
-                ],
-                alignment: AlignmentType.CENTER,
-                spacing: { after: index === titleLines.length - 1 ? 400 : 200 },
-              })
-            ),
+            // Titre principal
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: title,
+                  size: 24,
+                  font: "Calibri",
+                  bold: true,
+                }),
+              ],
+              alignment: AlignmentType.CENTER,
+              //spacing: { after: 400 },
+            }),
 
 
             // Tableau des employés
