@@ -16,17 +16,24 @@ class WordDocumentService {
       }
 
       // Générer le titre dynamique
-      let title = 'لائحة الموظفين المستفيدين من التعويض عن الاعمال الشاقة و الملوثة';
+      let titleLines: string[] = ['لائحة الموظفين المستفيدين من التعويض عن الاعمال الشاقة و الملوثة'];
+      
       if (assignment && service) {
-        title = `لائحة الموظفين المستفيدين من التعويض عن الاعمال الشاقة و الملوثة
-         ب${assignment} 
-         ب${service}`;
+        titleLines = [
+          'لائحة الموظفين المستفيدين من التعويض عن الاعمال الشاقة و الملوثة',
+          `ب${assignment}`,
+          `ب${service}`
+        ];
       } else if (assignment) {
-        title = `لائحة الموظفين المستفيدين من التعويض عن الاعمال الشاقة و الملوثة
-        ب${assignment}`;
+        titleLines = [
+          'لائحة الموظفين المستفيدين من التعويض عن الاعمال الشاقة و الملوثة',
+          `ب${assignment}`
+        ];
       } else if (service) {
-        title = `لائحة الموظفين المستفيدين من التعويض عن الاعمال الشاقة و الملوثة
-         ب${service}`;
+        titleLines = [
+          'لائحة الموظفين المستفيدين من التعويض عن الاعمال الشاقة و الملوثة',
+          `ب${service}`
+        ];
       }
 
 
@@ -109,19 +116,23 @@ class WordDocumentService {
               spacing: { after: 400 },
             }),
 
-            // Titre principal
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: title,
-                  size: 24,
-                  font: "Calibri",
-                  bold: true,
-                }),
-              ],
-              alignment: AlignmentType.CENTER,
-              //spacing: { after: 400 },
-            }),
+            // Titre principal - chaque ligne centrée séparément
+            ...titleLines.map((line, index) => 
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: line,
+                    size: 24,
+                    font: "Calibri",
+                    bold: true,
+                  }),
+                ],
+                alignment: AlignmentType.CENTER,
+                spacing: { 
+                  after: index === titleLines.length - 1 ? 400 : 100 
+                },
+              })
+            ),
 
 
             // Tableau des employés
